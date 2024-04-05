@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Scanner;
 
 class Customer {
@@ -133,7 +134,10 @@ class AtmMachine {
             System.out.println("1. Withdraw");
             System.out.println("2. Deposit");
             System.out.println("3. Check Balance");
-            System.out.println("4. Back to main menu");
+            System.out.println("4. Change Pin");
+            System.out.println("5. Generate pin");
+            
+            System.out.println("6. Back to main menu");
             System.out.println();
             int operationChoice = scanner.nextInt();
 
@@ -155,6 +159,13 @@ class AtmMachine {
                     System.out.println();
                     break;
                 case 4:
+                    changePinF(m1, accNo, scanner);
+                case 5:
+                    System.out.println("Pin Generation");
+                    System.out.println("Your generated Pin is"+generateRandomPinF(4));
+                    break;
+                   
+                case 6:
                     flag = false;
                     break;
                 default:
@@ -179,9 +190,10 @@ class AtmMachine {
                 System.out.println("Invalid PIN.");
             }
         } else {
-            System.out.println("Account not found.");
+            System.out.println("Account not found with this username");
         }
     }
+    
 
     private static void adminLogin(List<Admin> admins, Scanner scanner) {
         System.out.println("Enter username:");
@@ -240,4 +252,34 @@ class AtmMachine {
             System.out.println("Account not found.");
         }
     }
+
+    private static void changePinF(Map<String, List<String>> customerDataMap, String accNo, Scanner scanner) {
+        System.out.println("Enter current PIN:");
+        String currentPin = scanner.next();
+        List<String> customerData = customerDataMap.get(accNo);
+        if (customerData != null) {
+            if (currentPin.equals(customerData.get(0))) {
+                System.out.println("Enter new PIN:");
+                String newPin = scanner.next();
+                customerData.set(0, newPin);
+                System.out.println("PIN changed successfully.");
+            } else {
+                System.out.println("Invalid PIN.");
+            }
+        } else {
+            System.out.println("Account not found.");
+        }
+    }
+   
+
+    private static String generateRandomPinF(int length) {
+        Random random = new Random();
+        StringBuilder pinBuilder = new StringBuilder();
+        for (int i = 0; i < length; i++) {
+            pinBuilder.append(random.nextInt(10));
+        }
+        return pinBuilder.toString();
+    }
+
+    // transfer money , mini statement 
 }
